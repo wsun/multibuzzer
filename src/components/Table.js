@@ -3,6 +3,7 @@ import { get, some, values, sortBy, isEmpty } from 'lodash';
 import { Howl } from 'howler';
 
 export default function Table(game) {
+  const [loaded, setLoaded] = useState(false);
   const [host, selectHost] = useState(null);
   const [buzzed, setBuzzer] = useState(
     some(game.G.queue, (o) => o.playerId === game.playerID)
@@ -27,18 +28,21 @@ export default function Table(game) {
   };
 
   useEffect(() => {
-    if (!soundPlayed && game.G.queue)
-      if (!game.G.queue[game.playerID]) {
-        setBuzzer(false);
-      }
+    if (!game.G.queue[game.playerID]) {
+      setBuzzer(false);
+    }
+
     if (isEmpty(game.G.queue)) {
       setSoundPlayed(false);
-    } else {
+    } else if (loaded) {
       playSound();
     }
-  }, [game.playerID, game.G.queue]);
 
-  console.log(game);
+    if (!loaded) {
+      setLoaded(true);
+    }
+  }, [game.G.queue]);
+
   if (game.ctx.phase === 'setHost') {
     return (
       <div>
@@ -77,32 +81,32 @@ export default function Table(game) {
         </button>
       </div>
       <div id="settings">
-        <button onClick={() => setSound(!sound)}>
-          {sound ? 'Turn off sounds' : 'Turn on sound '}
-        </button>
-      </div>
-      <div id="reset">
         <button
           disabled={game.G.queue.length === 0}
           onClick={() => game.moves.resetBuzzers()}
         >
           Reset all buzzers
         </button>
+        <button onClick={() => setSound(!sound)}>
+          {sound ? 'Turn off sound' : 'Turn on sound '}
+        </button>
       </div>
       <div id="queue">
-        <h4>Buzzed</h4>
+        <p>Players Buzzed</p>
         <ul>
           {queue.map(({ playerId, timestamp }, i) => (
             <li key={playerId}>
-              <span className="bold">
+              <div className="bold">
                 {get(
                   game.gameMetadata.find(
                     (player) => String(player.id) === playerId
                   ),
                   'name'
                 )}
-              </span>
-              {i > 0 ? ` +${timestamp - queue[0].timestamp} ms` : null}
+              </div>
+              <div className="mini">
+                {i > 0 ? ` +${timestamp - queue[0].timestamp} ms` : null}
+              </div>
             </li>
           ))}
         </ul>
