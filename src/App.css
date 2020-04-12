@@ -6,7 +6,9 @@
   --yellowColor: #fff3c8;
   --greenColor: #a7ff91;
   --lightBlueColor: #aed1fb;
+  --buttonHoverColor: #4898f6;
   --brightBlueColor: #348df5;
+  --darkBlueColor: #2463ac;
   --lightActiveColor: #62666f;
   --confirmButtonBackground: #4a5161;
   --confirmButtonHoverBackground: #3b404d;
@@ -38,4 +40,65 @@
 
 .App header .navbar-brand:hover {
   color: white;
+}
+
+.App button:focus:enabled {
+  outline: none;
+}
+
+.App #buzzer {
+  text-align: center;
+}
+
+.App #buzzer > button {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background-color: var(--brightBlueColor);
+  color: white;
+  border: none;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.App #buzzer > button:hover {
+  background-color: var(--buttonHoverColor);
+}
+
+.App #buzzer > button:active {
+  background-color: var(--darkBlueColor);
+}
+
+.App #buzzer > button:disabled {
+  background-color: var(--lightBackgroundColor);
+}
+
+.App #reset {
+  margin: 30px 0;
+  text-align: center;
+}
+
+.App #reset > button {
+  background: none;
+  font-weight: 700;
+  color: white;
+  padding: 8px 10px;
+  border-radius: 4px;
+}
+
+.App #reset > button:hover {
+  background-color: var(--lightBackgroundColor);
+}
+
+.App #queue {
+  text-align: center;
+}
+
+.App #queue ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+.App .bold {
+  font-weight: 600;
 }

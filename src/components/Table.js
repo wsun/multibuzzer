@@ -13,6 +13,7 @@ export default function Table(game) {
     }
   }, [game.playerID, game.G.queue]);
 
+  console.log(game);
   if (game.ctx.phase === 'setHost') {
     return (
       <div>
@@ -35,36 +36,45 @@ export default function Table(game) {
   const queue = sortBy(values(game.G.queue), ['timestamp']);
   return (
     <div>
-      <button
-        disabled={buzzed}
-        onClick={() => {
-          if (!buzzed) {
-            game.moves.buzz(game.playerID);
-            setBuzzer(true);
-          }
-        }}
-      >
-        Buzz
-      </button>
-      <button
-        disabled={game.G.queue.length === 0}
-        onClick={() => game.moves.resetBuzzers()}
-      >
-        Reset
-      </button>
-      <div>
-        <div>Buzzed:</div>
-        {queue.map(({ playerId, timestamp }, i) => (
-          <div key={playerId}>
-            {get(
-              game.gameMetadata.find(
-                (player) => String(player.id) === playerId
-              ),
-              'name'
-            )}
-            {i > 0 ? ` +${timestamp - queue[0].timestamp} ms` : null}
-          </div>
-        ))}
+      <h3 className="room-title"></h3>
+      <div id="buzzer">
+        <button
+          disabled={buzzed}
+          onClick={() => {
+            if (!buzzed) {
+              game.moves.buzz(game.playerID);
+              setBuzzer(true);
+            }
+          }}
+        >
+          Buzz
+        </button>
+      </div>
+      <div id="reset">
+        <button
+          disabled={game.G.queue.length === 0}
+          onClick={() => game.moves.resetBuzzers()}
+        >
+          Reset all buzzers
+        </button>
+      </div>
+      <div id="queue">
+        <h3>Buzzed</h3>
+        <ul>
+          {queue.map(({ playerId, timestamp }, i) => (
+            <li key={playerId}>
+              <span className="bold">
+                {get(
+                  game.gameMetadata.find(
+                    (player) => String(player.id) === playerId
+                  ),
+                  'name'
+                )}
+              </span>
+              {i > 0 ? ` +${timestamp - queue[0].timestamp} ms` : null}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
