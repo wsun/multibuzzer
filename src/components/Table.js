@@ -1,15 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { get, some, values, sortBy } from 'lodash';
+import { get, some, values, sortBy, isEmpty } from 'lodash';
+import { Howl } from 'howler';
 
 export default function Table(game) {
   const [host, selectHost] = useState(null);
   const [buzzed, setBuzzer] = useState(
     some(game.G.queue, (o) => o.playerId === game.playerID)
   );
+  const [sound, setSound] = useState(true);
+  const [soundPlayed, setSoundPlayed] = useState(false);
+
+  const buzzSound = new Howl({
+    src: [
+      `${process.env.PUBLIC_URL}/shortBuzz.webm`,
+      `${process.env.PUBLIC_URL}/shortBuzz.mp3`,
+    ],
+    volume: 0.5,
+    rate: 1.5,
+  });
 
   useEffect(() => {
     if (!game.G.queue[game.playerID]) {
       setBuzzer(false);
+    }
+    if (isEmpty(game.G.queue)) {
+      setSoundPlayed(false);
     }
   }, [game.playerID, game.G.queue]);
 
@@ -36,12 +51,15 @@ export default function Table(game) {
   const queue = sortBy(values(game.G.queue), ['timestamp']);
   return (
     <div>
-      <h3 className="room-title"></h3>
+      <p id="room-title">Room {game.gameID}</p>
       <div id="buzzer">
         <button
           disabled={buzzed}
           onClick={() => {
             if (!buzzed) {
+              if (sound) {
+                buzzSound.play();
+              }
               game.moves.buzz(game.playerID);
               setBuzzer(true);
             }
@@ -59,7 +77,7 @@ export default function Table(game) {
         </button>
       </div>
       <div id="queue">
-        <h3>Buzzed</h3>
+        <h4>Buzzed</h4>
         <ul>
           {queue.map(({ playerId, timestamp }, i) => (
             <li key={playerId}>

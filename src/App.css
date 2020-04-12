@@ -46,6 +46,11 @@
   outline: none;
 }
 
+.App #room-title {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 .App #buzzer {
   text-align: center;
 }
