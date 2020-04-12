@@ -42,17 +42,28 @@
   color: white;
 }
 
+.App button {
+  background: none;
+  font-weight: 700;
+  color: white;
+  padding: 8px 10px;
+  border-radius: 4px;
+}
+
+.App button:hover {
+  background-color: var(--lightBackgroundColor);
+}
+
 .App button:focus:enabled {
   outline: none;
 }
 
-.App #room-title {
-  margin-bottom: 20px;
+.App .bgio-client {
   text-align: center;
 }
 
-.App #buzzer {
-  text-align: center;
+.App #room-title {
+  margin-bottom: 20px;
 }
 
 .App #buzzer > button {
@@ -78,25 +89,12 @@
   background-color: var(--lightBackgroundColor);
 }
 
+.App #settings {
+  margin: 30px 0;
+}
+
 .App #reset {
   margin: 30px 0;
-  text-align: center;
-}
-
-.App #reset > button {
-  background: none;
-  font-weight: 700;
-  color: white;
-  padding: 8px 10px;
-  border-radius: 4px;
-}
-
-.App #reset > button:hover {
-  background-color: var(--lightBackgroundColor);
-}
-
-.App #queue {
-  text-align: center;
 }
 
 .App #queue ul {

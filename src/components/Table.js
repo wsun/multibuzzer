@@ -19,12 +19,22 @@ export default function Table(game) {
     rate: 1.5,
   });
 
-  useEffect(() => {
-    if (!game.G.queue[game.playerID]) {
-      setBuzzer(false);
+  const playSound = () => {
+    if (sound && !soundPlayed) {
+      buzzSound.play();
+      setSoundPlayed(true);
     }
+  };
+
+  useEffect(() => {
+    if (!soundPlayed && game.G.queue)
+      if (!game.G.queue[game.playerID]) {
+        setBuzzer(false);
+      }
     if (isEmpty(game.G.queue)) {
       setSoundPlayed(false);
+    } else {
+      playSound();
     }
   }, [game.playerID, game.G.queue]);
 
@@ -57,15 +67,18 @@ export default function Table(game) {
           disabled={buzzed}
           onClick={() => {
             if (!buzzed) {
-              if (sound) {
-                buzzSound.play();
-              }
+              playSound();
               game.moves.buzz(game.playerID);
               setBuzzer(true);
             }
           }}
         >
           Buzz
+        </button>
+      </div>
+      <div id="settings">
+        <button onClick={() => setSound(!sound)}>
+          {sound ? 'Turn off sounds' : 'Turn on sound '}
         </button>
       </div>
       <div id="reset">
