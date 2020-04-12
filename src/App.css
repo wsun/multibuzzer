@@ -63,7 +63,16 @@
 }
 
 .App #room-title {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
+}
+
+.App #warning {
+  color: var(--redColor);
+  font-weight: 500;
+}
+
+.App #buzzer {
+  margin-top: 20px;
 }
 
 .App #buzzer > button {

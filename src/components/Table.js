@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { get, some, values, sortBy, isEmpty } from 'lodash';
+import { get, some, values, sortBy, isEmpty, round } from 'lodash';
 import { Howl } from 'howler';
 
 export default function Table(game) {
@@ -28,10 +28,12 @@ export default function Table(game) {
   };
 
   useEffect(() => {
+    // reset buzzer based on game
     if (!game.G.queue[game.playerID]) {
       setBuzzer(false);
     }
 
+    // reset ability to play sound if there is no pending buzzer
     if (isEmpty(game.G.queue)) {
       setSoundPlayed(false);
     } else if (loaded) {
@@ -63,9 +65,19 @@ export default function Table(game) {
   }
 
   const queue = sortBy(values(game.G.queue), ['timestamp']);
+  const timeDisplay = (delta) => {
+    if (delta > 1000) {
+      return `+${round(delta / 1000, 2)} s`;
+    }
+    return `+${delta} ms`;
+  };
+
   return (
     <div>
       <p id="room-title">Room {game.gameID}</p>
+      {!game.isConnected ? (
+        <p id="warning">Your connection is unstable - please refresh</p>
+      ) : null}
       <div id="buzzer">
         <button
           disabled={buzzed}
@@ -105,7 +117,9 @@ export default function Table(game) {
                 )}
               </div>
               <div className="mini">
-                {i > 0 ? ` +${timestamp - queue[0].timestamp} ms` : null}
+                {i > 0
+                  ? ` ${timeDisplay(timestamp - queue[0].timestamp)}`
+                  : null}
               </div>
             </li>
           ))}
