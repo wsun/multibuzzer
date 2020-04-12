@@ -1,0 +1,41 @@
+:root {
+  --backgroundColor: #282c35;
+  --lightBackgroundColor: #343a48;
+  --darkColor: #444444;
+  --redColor: #d0021b;
+  --yellowColor: #fff3c8;
+  --greenColor: #a7ff91;
+  --lightBlueColor: #aed1fb;
+  --brightBlueColor: #348df5;
+  --lightActiveColor: #62666f;
+  --confirmButtonBackground: #4a5161;
+  --confirmButtonHoverBackground: #3b404d;
+  --disabledButtonText: #8f8f8f;
+  --darkActiveColor: #2d313a;
+  --activeColor: #3b404b;
+
+  --levelCircleSize: 24px;
+  --iconMargin: 8px;
+}
+
+.App {
+  color: white;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.App main {
+  flex: 1;
+  background-color: var(--backgroundColor);
+}
+
+.App header .navbar-brand {
+  color: white;
+  font-weight: 800;
+}
+
+.App header .navbar-brand:hover {
+  color: white;
+}
