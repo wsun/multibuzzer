@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { get, some } from 'lodash';
+import { get, some, values, sortBy } from 'lodash';
 
 export default function Table(game) {
   const [host, selectHost] = useState(null);
@@ -8,10 +8,10 @@ export default function Table(game) {
   );
 
   useEffect(() => {
-    if (game.G.queue.length === 0) {
+    if (!game.G.queue[game.playerID]) {
       setBuzzer(false);
     }
-  }, [game.G.queue]);
+  }, [game.playerID, game.G.queue]);
 
   if (game.ctx.phase === 'setHost') {
     return (
@@ -32,13 +32,14 @@ export default function Table(game) {
     );
   }
 
+  const queue = sortBy(values(game.G.queue), ['timestamp']);
   return (
     <div>
       <button
         disabled={buzzed}
         onClick={() => {
           if (!buzzed) {
-            game.moves.buzz(game.playerID, new Date().getTime());
+            game.moves.buzz(game.playerID);
             setBuzzer(true);
           }
         }}
@@ -53,7 +54,7 @@ export default function Table(game) {
       </button>
       <div>
         <div>Buzzed:</div>
-        {game.G.queue.map(({ playerId, timestamp }, i) => (
+        {queue.map(({ playerId, timestamp }, i) => (
           <div key={playerId}>
             {get(
               game.gameMetadata.find(
@@ -61,7 +62,7 @@ export default function Table(game) {
               ),
               'name'
             )}
-            {i > 0 ? ` +${timestamp - game.G.queue[0].timestamp} ms` : null}
+            {i > 0 ? ` +${timestamp - queue[0].timestamp} ms` : null}
           </div>
         ))}
       </div>

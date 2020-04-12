@@ -1,0 +1,9 @@
+{
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    // "node_modules/": true,
+    "build": true,
+    "__tests__/": true,
+    ".[bfgrsw]*": true
+  }
+}
