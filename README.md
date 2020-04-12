@@ -1,4 +1,4 @@
-## Buzzer
+## MultiBuzzer
 
 Simple multiplayer buzzer system, e.g. for remote quiz bowl!
 
