@@ -1,8 +1,8 @@
 import React from 'react';
 import { Buzzer } from './lib/game';
 
-import { Lobby } from 'boardgame.io/react';
 import Header from './components/Header';
+import Lobby from './components/Lobby';
 import Table from './components/Table';
 import './App.css';
 
