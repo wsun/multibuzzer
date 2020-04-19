@@ -23,7 +23,12 @@ function App() {
     <div className="App">
       <main>
         <Router>
-          <Header />
+          <Header
+            auth={auth}
+            clearAuth={() =>
+              setAuth({ playerID: null, credentials: null, roomID: null })
+            }
+          />
           <Switch>
             <Route
               path="/:id"

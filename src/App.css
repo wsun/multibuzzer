@@ -42,6 +42,10 @@
   color: white;
 }
 
+.App header nav {
+  justify-content: space-between;
+}
+
 .App button {
   background: none;
   font-weight: 700;
@@ -58,8 +62,15 @@
   outline: none;
 }
 
+.App header nav button {
+  font-weight: 500;
+  color: var(--lightActiveColor);
+  border: none;
+}
+
 .App .bgio-client {
   text-align: center;
+  margin-top: 20px;
 }
 
 .App #room-title {

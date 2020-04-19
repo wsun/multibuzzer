@@ -1,9 +1,5 @@
 import { ActivePlayers } from 'boardgame.io/core';
 
-function setHost(G, ctx, id) {
-  G.hostId = id;
-}
-
 function resetBuzzers(G) {
   G.queue = {};
 }
@@ -29,18 +25,10 @@ export const Buzzer = {
   name: 'buzzer',
   minPlayers: 2,
   maxPlayers: 100,
-  setup: () => ({ hostId: null, queue: {} }),
+  setup: () => ({ hostId: '0', queue: {} }),
   phases: {
-    setHost: {
+    play: {
       start: true,
-      moves: { setHost },
-      turn: {
-        activePlayers: ActivePlayers.ALL,
-      },
-      endIf: (G) => G.hostId,
-      next: 'playLive',
-    },
-    playLive: {
       moves: { buzz, resetBuzzers, restart },
       turn: {
         activePlayers: ActivePlayers.ALL,

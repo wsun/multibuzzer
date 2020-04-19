@@ -5,12 +5,12 @@ import { AiOutlineDisconnect } from 'react-icons/ai';
 
 export default function Table(game) {
   const [loaded, setLoaded] = useState(false);
-  const [host, selectHost] = useState(null);
   const [buzzed, setBuzzer] = useState(
     some(game.G.queue, (o) => o.id === game.playerID)
   );
-  const [sound, setSound] = useState(true);
+  const [sound, setSound] = useState(false);
   const [soundPlayed, setSoundPlayed] = useState(false);
+  const isHost = game.G.hostId === game.playerID;
 
   const buzzSound = new Howl({
     src: [
@@ -49,27 +49,6 @@ export default function Table(game) {
   const players = game.gameMetadata
     .filter((p) => p.name)
     .map((p) => ({ ...p, id: String(p.id) }));
-
-  if (game.ctx.phase === 'setHost') {
-    return (
-      <div>
-        <select
-          value={host}
-          onChange={(e) => selectHost(e.currentTarget.value)}
-        >
-          <option value={null}></option>
-          {players
-            .filter((p) => p.name)
-            .map((player) => (
-              <option key={player.id} value={player.id}>
-                {player.name}
-              </option>
-            ))}
-        </select>
-        <button onClick={() => game.moves.setHost(host)}>Confirm host</button>
-      </div>
-    );
-  }
 
   const queue = sortBy(values(game.G.queue), ['timestamp']);
   const buzzedPlayers = queue
@@ -117,12 +96,14 @@ export default function Table(game) {
         </button>
       </div>
       <div id="settings">
-        <button
-          disabled={game.G.queue.length === 0}
-          onClick={() => game.moves.resetBuzzers()}
-        >
-          Reset all buzzers
-        </button>
+        {isHost ? (
+          <button
+            disabled={game.G.queue.length === 0}
+            onClick={() => game.moves.resetBuzzers()}
+          >
+            Reset all buzzers
+          </button>
+        ) : null}
         <button onClick={() => setSound(!sound)}>
           {sound ? 'Turn off sound' : 'Turn on sound '}
         </button>

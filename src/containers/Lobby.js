@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import { useLocation, useHistory } from 'react-router-dom';
-import axios from 'axios';
 import { get } from 'lodash';
-import { Buzzer } from '../lib/store';
-
-axios.defaults.headers['Content-Type'] = 'application/json';
-axios.defaults.headers['Accept'] = 'application/json';
+import { joinRoom, getRoom, createRoom } from '../lib/endpoints';
 
 export default function Lobby({ setAuth }) {
   const location = useLocation();
@@ -17,52 +13,34 @@ export default function Lobby({ setAuth }) {
   const [room, setRoom] = useState(prefilledRoomID || '');
   const [joinMode, setJoinMode] = useState(true);
 
-  const hostname = window.location.hostname;
-  const port = window.location.port;
-  const protocol = window.location.protocol;
-  const gameport = process.env.PORT || 4001;
-
-  const url = protocol + '//' + hostname + (port ? ':' + port : '');
-  const localUrl = `${protocol}//${hostname}:${gameport}`;
-  const lobbyServer = process.env.NODE_ENV === 'production' ? url : localUrl;
-
-  // helper: join a room
-  async function joiner(room) {
-    const playerSeat = room.players.find((player) => player.name === name);
-    const freeSeat = room.players.find((player) => !player.name);
-
-    if (!playerSeat && !freeSeat) {
-      throw new Error('Room is full');
-    }
-    const playerID = get(playerSeat, 'id') || get(freeSeat, 'id');
-    const joinRes = await axios.post(
-      `${lobbyServer}/games/${Buzzer.name}/${room.roomID}/join`,
-      {
-        playerID,
-        playerName: name,
-      }
-    );
-    if (joinRes.status !== 200) {
-      throw new Error(`Join room error ${joinRes.status}`);
-    }
-    const creds = joinRes.data;
-    return {
-      playerID,
-      credentials: creds.playerCredentials,
-      roomID: room.roomID,
-    };
-  }
-
-  // join room call: find room, then join it
-  async function joinRoom(roomId) {
+  // enter room: find room, then join it
+  async function enterRoom(roomId) {
     try {
-      const roomRes = await axios.get(
-        `${lobbyServer}/games/${Buzzer.name}/${roomId}`
-      );
+      // get room
+      const roomRes = await getRoom(roomId);
       if (roomRes.status !== 200)
         throw new Error(`Server room error ${roomRes.status}`);
       const room = roomRes.data;
-      const auth = await joiner(room);
+
+      // determine seat to take
+      const playerSeat = room.players.find((player) => player.name === name);
+      const freeSeat = room.players.find((player) => !player.name);
+      if (!playerSeat && !freeSeat) {
+        throw new Error('Room is full');
+      }
+      const playerID = get(playerSeat, 'id') || get(freeSeat, 'id');
+      const joinRes = await joinRoom(room.roomID, playerID, name);
+      if (joinRes.status !== 200) {
+        throw new Error(`Join room error ${joinRes.status}`);
+      }
+      const creds = joinRes.data;
+      const auth = {
+        playerID,
+        credentials: creds.playerCredentials,
+        roomID: room.roomID,
+      };
+
+      // save auth and go to room
       setAuth(auth);
       history.push(`/${room.roomID}`);
     } catch (error) {
@@ -70,20 +48,15 @@ export default function Lobby({ setAuth }) {
     }
   }
 
-  // create room call: create room, then join it
-  async function createRoom() {
+  // make room: create room, then join it
+  async function makeRoom() {
     try {
-      const createRes = await axios.post(
-        `${lobbyServer}/games/${Buzzer.name}/create`,
-        {
-          numPlayers: 100,
-        }
-      );
+      const createRes = await createRoom();
       if (createRes.status !== 200) {
         throw new Error(`Create room error ${createRes.status}`);
       }
       const roomID = createRes.data.gameID;
-      await joinRoom(roomID);
+      await enterRoom(roomID);
     } catch (error) {
       console.log('createError', error);
     }
@@ -92,9 +65,9 @@ export default function Lobby({ setAuth }) {
   function handleSubmit(event) {
     event.preventDefault();
     if (joinMode) {
-      joinRoom(room);
+      enterRoom(room);
     } else {
-      createRoom();
+      makeRoom();
     }
   }
 

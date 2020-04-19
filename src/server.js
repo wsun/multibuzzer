@@ -19,7 +19,7 @@ function randomString(length, chars) {
 }
 
 function generateReferralCode(length = 6) {
-  return randomString(length, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+  return randomString(length, 'ABCDEFGHJKLMNPQRSTUVWXYZ');
 }
 
 server.run({
