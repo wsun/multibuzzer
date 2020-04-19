@@ -10,6 +10,19 @@ const { app } = server;
 
 app.use(serve(path.join(__dirname, '../build')));
 
-server.run(PORT, () => {
-  console.log(`Serving at: http://localhost:${PORT}/`);
+function randomString(length, chars) {
+  let result = '';
+  // eslint-disable-next-line no-plusplus
+  for (let i = length; i > 0; --i)
+    result += chars[Math.floor(Math.random() * chars.length)];
+  return result;
+}
+
+function generateReferralCode(length = 6) {
+  return randomString(length, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+}
+
+server.run({
+  port: PORT,
+  lobbyConfig: { uuid: () => generateReferralCode(6) },
 });

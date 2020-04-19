@@ -1,29 +1,55 @@
-import React from 'react';
-import { Buzzer } from './lib/game';
+import React, { useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
+import { get, isNil } from 'lodash';
 
 import Header from './components/Header';
-import Lobby from './components/Lobby';
-import Table from './components/Table';
+import Home from './containers/Home';
+import Lobby from './containers/Lobby';
 import './App.css';
 
-const hostname = window.location.hostname;
-const port = window.location.port;
-const protocol = window.location.protocol;
-const gameport = process.env.PORT || 4001;
-
-const url = protocol + '//' + hostname + (port ? ':' + port : '');
-const localUrl = `${protocol}//${hostname}:${gameport}`;
-
 function App() {
+  const [auth, setAuth] = useState({
+    playerID: null,
+    credentials: null,
+    roomID: null,
+  });
+
   return (
     <div className="App">
       <main>
-        <Header />
-        <Lobby
-          gameServer={process.env.NODE_ENV === 'production' ? url : localUrl}
-          lobbyServer={process.env.NODE_ENV === 'production' ? url : localUrl}
-          gameComponents={[{ game: Buzzer, board: Table }]}
-        />
+        <Router>
+          <Header />
+          <Switch>
+            <Route
+              path="/:id"
+              render={({ location, match }) => {
+                const roomID = get(match, 'params.id');
+                // redirect if the roomID in auth doesn't match, or no credentials
+                return roomID &&
+                  auth.roomID === roomID &&
+                  !isNil(auth.credentials) &&
+                  !isNil(auth.playerID) ? (
+                  <Lobby auth={auth} />
+                ) : (
+                  <Redirect
+                    to={{
+                      pathname: '/',
+                      state: { from: location, roomID },
+                    }}
+                  />
+                );
+              }}
+            />
+            <Route path="/">
+              <Home setAuth={setAuth} />
+            </Route>
+          </Switch>
+        </Router>
       </main>
     </div>
   );

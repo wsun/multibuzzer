@@ -45,6 +45,8 @@ export default function Table(game) {
     }
   }, [game.G.queue]);
 
+  const players = game.gameMetadata;
+
   if (game.ctx.phase === 'setHost') {
     return (
       <div>
@@ -53,11 +55,13 @@ export default function Table(game) {
           onChange={(e) => selectHost(e.currentTarget.value)}
         >
           <option value={null}></option>
-          {game.gameMetadata.map((player) => (
-            <option key={player.id} value={player.id}>
-              {player.name}
-            </option>
-          ))}
+          {players
+            .filter((p) => p.name)
+            .map((player) => (
+              <option key={player.id} value={player.id}>
+                {player.name}
+              </option>
+            ))}
         </select>
         <button onClick={() => game.moves.setHost(host)}>Confirm host</button>
       </div>
@@ -110,9 +114,7 @@ export default function Table(game) {
             <li key={playerId}>
               <div className="bold">
                 {get(
-                  game.gameMetadata.find(
-                    (player) => String(player.id) === playerId
-                  ),
+                  players.find((player) => String(player.id) === playerId),
                   'name'
                 )}
               </div>
