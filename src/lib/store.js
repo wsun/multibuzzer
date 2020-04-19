@@ -1,20 +1,20 @@
 import { ActivePlayers } from 'boardgame.io/core';
 
-function setHost(G, ctx, playerId) {
-  G.hostId = playerId;
+function setHost(G, ctx, id) {
+  G.hostId = id;
 }
 
 function resetBuzzers(G) {
   G.queue = {};
 }
 
-function buzz(G, ctx, playerId) {
+function buzz(G, ctx, id) {
   const newQueue = {
     ...G.queue,
   };
-  if (!newQueue[playerId]) {
+  if (!newQueue[id]) {
     // buzz on server will overwrite the client provided timestamp
-    newQueue[playerId] = { playerId, timestamp: new Date().getTime() };
+    newQueue[id] = { id, timestamp: new Date().getTime() };
   }
   G.queue = newQueue;
 }

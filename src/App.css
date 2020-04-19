@@ -66,7 +66,7 @@
   margin-bottom: 0px;
 }
 
-.App #warning {
+.App .warning {
   color: var(--redColor);
   font-weight: 500;
 }
@@ -110,24 +110,42 @@
   margin: 30px 0;
 }
 
-.App #queue p {
+.App .queue {
+  margin-bottom: 40px;
+}
+
+.App .queue p {
   margin-bottom: 0;
 }
 
-.App #queue ul {
+.App .queue ul {
   padding: 0;
   list-style-type: none;
 }
 
-.App #queue li {
+.App .queue li {
   font-size: 1.5rem;
   margin-bottom: 5px;
+}
+
+.App .queue .disconnected {
+  margin-left: 5px;
+  color: var(--redColor);
+  opacity: 1;
 }
 
 .App .mini {
   font-size: 1rem;
 }
 
+.App .tiny {
+  font-size: 0.8rem;
+}
+
 .App .bold {
   font-weight: 600;
+}
+
+.App .dim {
+  opacity: 0.5;
 }

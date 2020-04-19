@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { get, some, values, sortBy, isEmpty, round } from 'lodash';
+import { some, values, sortBy, orderBy, isEmpty, round } from 'lodash';
 import { Howl } from 'howler';
+import { AiOutlineDisconnect } from 'react-icons/ai';
 
 export default function Table(game) {
   const [loaded, setLoaded] = useState(false);
   const [host, selectHost] = useState(null);
   const [buzzed, setBuzzer] = useState(
-    some(game.G.queue, (o) => o.playerId === game.playerID)
+    some(game.G.queue, (o) => o.id === game.playerID)
   );
   const [sound, setSound] = useState(true);
   const [soundPlayed, setSoundPlayed] = useState(false);
@@ -45,7 +46,9 @@ export default function Table(game) {
     }
   }, [game.G.queue]);
 
-  const players = game.gameMetadata;
+  const players = game.gameMetadata
+    .filter((p) => p.name)
+    .map((p) => ({ ...p, id: String(p.id) }));
 
   if (game.ctx.phase === 'setHost') {
     return (
@@ -69,6 +72,23 @@ export default function Table(game) {
   }
 
   const queue = sortBy(values(game.G.queue), ['timestamp']);
+  const buzzedPlayers = queue
+    .map((p) => {
+      const player = players.find((player) => player.id === p.id);
+      return {
+        ...p,
+        name: player.name,
+        connected: player.connected,
+      };
+    })
+    .filter((p) => p.name);
+  // active players who haven't buzzed
+  const activePlayers = orderBy(
+    players.filter((p) => !some(queue, (q) => q.id === p.id)),
+    ['connected', 'name'],
+    ['desc', 'asc']
+  );
+
   const timeDisplay = (delta) => {
     if (delta > 1000) {
       return `+${round(delta / 1000, 2)} s`;
@@ -80,7 +100,7 @@ export default function Table(game) {
     <div>
       <p id="room-title">Room {game.gameID}</p>
       {!game.isConnected ? (
-        <p id="warning">Your connection is unstable - please refresh</p>
+        <p className="warning">Your connection is unstable - please refresh</p>
       ) : null}
       <div id="buzzer">
         <button
@@ -107,21 +127,40 @@ export default function Table(game) {
           {sound ? 'Turn off sound' : 'Turn on sound '}
         </button>
       </div>
-      <div id="queue">
+      <div className="queue">
         <p>Players Buzzed</p>
         <ul>
-          {queue.map(({ playerId, timestamp }, i) => (
-            <li key={playerId}>
-              <div className="bold">
-                {get(
-                  players.find((player) => String(player.id) === playerId),
-                  'name'
+          {buzzedPlayers.map(({ id, name, timestamp, connected }, i) => (
+            <li key={id}>
+              <div className={`bold ${!connected ? 'dim' : ''}`}>
+                {name}
+                {!connected ? (
+                  <AiOutlineDisconnect className="disconnected" />
+                ) : (
+                  ''
                 )}
               </div>
-              <div className="mini">
-                {i > 0
-                  ? ` ${timeDisplay(timestamp - queue[0].timestamp)}`
-                  : null}
+              {i > 0 ? (
+                <div className="mini">
+                  {timeDisplay(timestamp - queue[0].timestamp)}
+                </div>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="queue">
+        <p>Other Players</p>
+        <ul>
+          {activePlayers.map(({ id, name, connected }) => (
+            <li key={id}>
+              <div className={`bold ${!connected ? 'dim' : ''}`}>
+                {name}
+                {!connected ? (
+                  <AiOutlineDisconnect className="disconnected" />
+                ) : (
+                  ''
+                )}
               </div>
             </li>
           ))}

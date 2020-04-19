@@ -2371,7 +2371,7 @@ bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
 
 boardgame.io@wsun/boardgame.io#master:
   version "0.39.5"
-  resolved "https://codeload.github.com/wsun/boardgame.io/tar.gz/e62b9e12131baeef7b8eea1f52b78e5a6ca0c0d7"
+  resolved "https://codeload.github.com/wsun/boardgame.io/tar.gz/a81cee87b2e8c5bb3bc6d5661358ed7ad2f4def3"
   dependencies:
     "@koa/cors" "^2.2.1"
     flatted "^0.2.3"
