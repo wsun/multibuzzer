@@ -27,7 +27,7 @@ export default function Header({ auth, clearAuth }) {
           <span role="img" aria-label="buzzer">
             🛎️
           </span>{' '}
-          MultiBuzzer
+          Multibuzzer
         </Navbar.Brand>
         {location.pathname.length > 1 ? (
           <Button onClick={() => leave()}>Leave game</Button>
