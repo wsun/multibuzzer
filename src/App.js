@@ -8,8 +8,8 @@ import {
 import { get, isNil } from 'lodash';
 
 import Header from './components/Header';
-import Home from './containers/Home';
 import Lobby from './containers/Lobby';
+import Game from './containers/Game';
 import './App.css';
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
                   auth.roomID === roomID &&
                   !isNil(auth.credentials) &&
                   !isNil(auth.playerID) ? (
-                  <Lobby auth={auth} />
+                  <Game auth={auth} />
                 ) : (
                   <Redirect
                     to={{
@@ -46,7 +46,7 @@ function App() {
               }}
             />
             <Route path="/">
-              <Home setAuth={setAuth} />
+              <Lobby setAuth={setAuth} />
             </Route>
           </Switch>
         </Router>
