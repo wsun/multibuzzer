@@ -20,6 +20,10 @@
   --iconMargin: 8px;
 }
 
+html {
+  background-color: var(--backgroundColor);
+}
+
 .App {
   color: white;
   font-family: 'Inter', sans-serif;
@@ -44,6 +48,10 @@
 
 .App header nav {
   justify-content: space-between;
+}
+
+.App header svg {
+  margin-right: 5px;
 }
 
 .App button {

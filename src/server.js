@@ -8,7 +8,8 @@ const server = Server({ games: [Buzzer] });
 const PORT = process.env.PORT || 4001;
 const { app } = server;
 
-app.use(serve(path.join(__dirname, '../build')));
+const FRONTEND_PATH = path.join(__dirname, '../build');
+app.use(serve(FRONTEND_PATH));
 
 function randomString(length, chars) {
   let result = '';
@@ -18,11 +19,19 @@ function randomString(length, chars) {
   return result;
 }
 
-function generateReferralCode(length = 6) {
-  return randomString(length, 'ABCDEFGHJKLMNPQRSTUVWXYZ');
-}
-
-server.run({
-  port: PORT,
-  lobbyConfig: { uuid: () => generateReferralCode(6) },
-});
+server.run(
+  {
+    port: PORT,
+    lobbyConfig: { uuid: () => randomString(6, 'ABCDEFGHJKLMNPQRSTUVWXYZ') },
+  },
+  () => {
+    // rewrite rule for catching unresolved routes and redirecting to index.html
+    // for client-side routing
+    server.app.use(async (ctx, next) => {
+      await serve(FRONTEND_PATH)(
+        Object.assign(ctx, { path: 'index.html' }),
+        next
+      );
+    });
+  }
+);
