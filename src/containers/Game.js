@@ -6,6 +6,7 @@ import { Buzzer } from '../lib/store';
 import { GAME_SERVER } from '../lib/endpoints';
 import Header from '../components/Header';
 import Table from '../components/Table';
+import Footer from '../components/Footer';
 
 export default function Game({ auth, setAuth }) {
   const { id: roomID } = useParams();
@@ -31,6 +32,7 @@ export default function Game({ auth, setAuth }) {
           credentials={auth.credentials}
         />
       </div>
+      <Footer />
     </main>
   );
 }

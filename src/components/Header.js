@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Navbar } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import { leaveRoom } from '../lib/endpoints';
 
@@ -42,7 +42,7 @@ export default function Header({ auth = {}, clearAuth }) {
         <Navbar.Brand>
           <Logo /> Multibuzzer
         </Navbar.Brand>
-        {clearAuth ? <Button onClick={() => leave()}>Leave game</Button> : null}
+        {clearAuth ? <button onClick={() => leave()}>Leave game</button> : null}
       </Navbar>
     </header>
   );

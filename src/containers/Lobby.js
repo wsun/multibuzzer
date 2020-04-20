@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Container, Form } from 'react-bootstrap';
 import { useLocation, useHistory } from 'react-router-dom';
 import { get } from 'lodash';
 import { joinRoom, getRoom, createRoom } from '../lib/endpoints';
 import Header from '../components/Header';
+import Footer, { FooterSimple } from '../components/Footer';
 
 export default function Lobby({ setAuth }) {
   const location = useLocation();
@@ -136,8 +137,13 @@ export default function Lobby({ setAuth }) {
     <main id="lobby">
       <section className="primary d-none d-md-flex">
         <div id="lobby-left">
-          <Header />
-          <section className="container-half">{touts}</section>
+          <div>
+            <Header />
+            <section className="container-half">{touts}</section>
+          </div>
+          <section className="container-half">
+            <FooterSimple />
+          </section>
         </div>
         <div id="lobby-right">
           <section className="container-half">{form}</section>
@@ -145,11 +151,11 @@ export default function Lobby({ setAuth }) {
       </section>
       <section className="primary d-block d-md-none">
         <Header />
-        <Container>{form}</Container>
+        <Container className="container-mobile">{form}</Container>
         <div className="divider" />
-        <Container>{touts}</Container>
+        <Container className="container-mobile">{touts}</Container>
       </section>
-      {/* TODO FOOTER */}
+      <Footer mobileOnly />
     </main>
   );
 }

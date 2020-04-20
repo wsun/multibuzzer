@@ -83,12 +83,43 @@ html {
   border: none;
 }
 
+.App header nav button:hover {
+  color: white;
+}
+
+/* FOOTER */
+.App footer {
+  background-color: var(--backgroundColor);
+  padding: 30px 0;
+  color: var(--paragraphColor);
+  text-align: center;
+}
+
+.App #footer-simple {
+  padding: 30px 0;
+  color: var(--paragraphColor);
+}
+
+.App footer a,
+.App #footer-simple a {
+  color: var(--lightBlueColor);
+}
+
+.App footer a:hover,
+.App #footer-simple a:hover {
+  text-decoration: none;
+  opacity: 0.5;
+}
+
 /* LOBBY */
 
 .App #lobby-left {
   flex-grow: 40;
   flex-basis: 320px;
   background-color: var(--darkBlueColor);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .App #lobby-right {
@@ -121,7 +152,7 @@ html {
   padding-left: 60px;
 }
 
-.App #lobby .container {
+.App #lobby .container-mobile {
   margin-top: 40px;
   padding: 0 30px;
   max-width: 400px;
@@ -140,6 +171,7 @@ html {
 .App .touts h4 {
   font-weight: 500;
   font-size: 1.2rem;
+  line-height: 140%;
 }
 
 .App .touts p {
