@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Navbar } from 'react-bootstrap';
-import { useLocation, useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 import { leaveRoom } from '../lib/endpoints';
 
 function Logo({ size = 25 }) {
@@ -20,8 +20,7 @@ function Logo({ size = 25 }) {
   );
 }
 
-export default function Header({ auth, clearAuth }) {
-  const location = useLocation();
+export default function Header({ auth = {}, clearAuth }) {
   const history = useHistory();
 
   // leave current game
@@ -43,9 +42,7 @@ export default function Header({ auth, clearAuth }) {
         <Navbar.Brand>
           <Logo /> Multibuzzer
         </Navbar.Brand>
-        {location.pathname.length > 1 ? (
-          <Button onClick={() => leave()}>Leave game</Button>
-        ) : null}
+        {clearAuth ? <Button onClick={() => leave()}>Leave game</Button> : null}
       </Navbar>
     </header>
   );

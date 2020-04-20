@@ -3,6 +3,7 @@ import { Container, Form, Button } from 'react-bootstrap';
 import { useLocation, useHistory } from 'react-router-dom';
 import { get } from 'lodash';
 import { joinRoom, getRoom, createRoom } from '../lib/endpoints';
+import Header from '../components/Header';
 
 export default function Lobby({ setAuth }) {
   const location = useLocation();
@@ -72,45 +73,83 @@ export default function Lobby({ setAuth }) {
   }
 
   const form = joinMode ? (
-    <Form id="lobby-form" onSubmit={(e) => handleSubmit(e)}>
+    <Form className="lobby-form" onSubmit={(e) => handleSubmit(e)}>
+      <h3>Join a game</h3>
       <Form.Group controlId="room">
-        <Form.Label>Room ID</Form.Label>
+        <Form.Label>Room code</Form.Label>
         <Form.Control value={room} onChange={(e) => setRoom(e.target.value)} />
       </Form.Group>
 
       <Form.Group controlId="name">
-        <Form.Label>Player name</Form.Label>
+        <Form.Label>Your name</Form.Label>
         <Form.Control value={name} onChange={(e) => setName(e.target.value)} />
       </Form.Group>
 
-      <Button variant="primary" type="submit">
-        Join
-      </Button>
+      <button type="submit">Join</button>
+      <div className="switcher">
+        Hosting a game?{' '}
+        <button className="inline" onClick={() => setJoinMode(false)}>
+          Create room
+        </button>
+      </div>
     </Form>
   ) : (
-    <Form id="lobby-form" onSubmit={(e) => handleSubmit(e)}>
+    <Form className="lobby-form" onSubmit={(e) => handleSubmit(e)}>
+      <h3>Host a game</h3>
       <Form.Group controlId="name">
-        <Form.Label>Player name</Form.Label>
+        <Form.Label>Your name</Form.Label>
         <Form.Control value={name} onChange={(e) => setName(e.target.value)} />
       </Form.Group>
 
-      <Button variant="primary" type="submit">
-        Host
-      </Button>
+      <button type="submit">Host</button>
+      <div className="switcher">
+        Joining a game?{' '}
+        <button className="inline" onClick={() => setJoinMode(true)}>
+          Enter room
+        </button>
+      </div>
     </Form>
   );
 
-  return (
-    <Container id="lobby">
+  const touts = (
+    <div className="touts">
       <div>
-        <button onClick={() => setJoinMode(true)} disabled={joinMode}>
-          Join Game
-        </button>
-        <button onClick={() => setJoinMode(false)} disabled={!joinMode}>
-          Host Game
-        </button>
+        <h4>Simple multiplayer buzzer system</h4>
+        <p>Host a room and invite up to 100 people to join</p>
       </div>
-      {form}
-    </Container>
+      <div>
+        <h4>Join on any device</h4>
+        <p>
+          Use your computer, smartphone, or tablet to join and start buzzing
+        </p>
+      </div>
+      <div>
+        <h4>Free to use</h4>
+        <p>
+          Perfect for online quiz bowl, trivia night, or a classroom activity
+        </p>
+      </div>
+    </div>
+  );
+
+  return (
+    <main id="lobby">
+      <section className="primary d-none d-md-flex">
+        <div id="lobby-left">
+          <Header />
+          <section className="container-half">{touts}</section>
+        </div>
+        <div id="lobby-right">
+          <section className="container-half">{form}</section>
+        </div>
+      </section>
+      <section className="primary d-block d-md-none">
+        <Header />
+        <Container>{form}</Container>
+        <div className="divider" />
+        <Container>{touts}</Container>
+      </section>
+      {/* TODO FOOTER */}
+    </main>
   );
 }

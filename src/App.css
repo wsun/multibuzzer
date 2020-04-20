@@ -16,8 +16,8 @@
   --darkActiveColor: #2d313a;
   --activeColor: #3b404b;
 
-  --levelCircleSize: 24px;
-  --iconMargin: 8px;
+  --paragraphColor: #b4b4b4;
+  --darkBlueColor: #2c313e;
 }
 
 html {
@@ -27,19 +27,26 @@ html {
 .App {
   color: white;
   font-family: 'Inter', sans-serif;
+}
+
+.App main {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
 }
 
-.App main {
+.App .primary {
   flex: 1;
   background-color: var(--backgroundColor);
 }
 
 .App header .navbar-brand {
   color: white;
-  font-weight: 800;
+  font-weight: 600;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .App header .navbar-brand:hover {
@@ -51,7 +58,7 @@ html {
 }
 
 .App header svg {
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .App button {
@@ -75,6 +82,113 @@ html {
   color: var(--lightActiveColor);
   border: none;
 }
+
+/* LOBBY */
+
+.App #lobby-left {
+  flex-grow: 40;
+  flex-basis: 320px;
+  background-color: var(--darkBlueColor);
+}
+
+.App #lobby-right {
+  flex-grow: 60;
+  flex-basis: 480px;
+}
+
+.container-half {
+  width: 100%;
+  max-width: 375px;
+  padding-right: 40px;
+  padding-left: 40px;
+}
+
+@media screen and (max-width: 991px) {
+  .container-half {
+    max-width: 350px;
+  }
+}
+
+.App #lobby-left .container-half {
+  margin-left: auto;
+  margin-top: 100px;
+  padding-right: 60px;
+}
+
+.App #lobby-right .container-half {
+  margin-right: auto;
+  margin-top: 160px;
+  padding-left: 60px;
+}
+
+.App #lobby .container {
+  margin-top: 40px;
+  padding: 0 30px;
+  max-width: 400px;
+}
+
+.App #lobby .divider {
+  border: 1px solid var(--activeColor);
+  margin: 60px auto;
+  width: 75%;
+}
+
+.App .touts > :not(:first-child) {
+  margin-top: 40px;
+}
+
+.App .touts h4 {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.App .touts p {
+  color: var(--paragraphColor);
+  line-height: 140%;
+  font-size: 1rem;
+}
+
+.App .lobby-form h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.App .lobby-form .form-group:not(:first-of-type) {
+  margin-top: 2rem;
+}
+
+.App .lobby-form button[type='submit'] {
+  width: 100%;
+  background-color: var(--brightBlueColor);
+  border: none;
+  margin-top: 1rem;
+}
+
+.App .lobby-form button[type='submit']:hover {
+  background-color: var(--buttonHoverColor);
+}
+
+.App .lobby-form button.inline {
+  background: none;
+  border: none;
+  padding: 0;
+  font-weight: 500;
+  display: inline-block;
+  color: var(--lightBlueColor);
+  width: auto;
+}
+
+.App .lobby-form .switcher {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.App .lobby-form button.inline:hover {
+  opacity: 0.5;
+}
+
+/* GAME */
 
 .App .bgio-client {
   text-align: center;

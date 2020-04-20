@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom';
 import { get, isNil } from 'lodash';
 
-import Header from './components/Header';
 import Lobby from './containers/Lobby';
 import Game from './containers/Game';
 import './App.css';
@@ -21,41 +20,33 @@ function App() {
 
   return (
     <div className="App">
-      <main>
-        <Router>
-          <Header
-            auth={auth}
-            clearAuth={() =>
-              setAuth({ playerID: null, credentials: null, roomID: null })
-            }
+      <Router>
+        <Switch>
+          <Route
+            path="/:id"
+            render={({ location, match }) => {
+              const roomID = get(match, 'params.id');
+              // redirect if the roomID in auth doesn't match, or no credentials
+              return roomID &&
+                auth.roomID === roomID &&
+                !isNil(auth.credentials) &&
+                !isNil(auth.playerID) ? (
+                <Game auth={auth} setAuth={setAuth} />
+              ) : (
+                <Redirect
+                  to={{
+                    pathname: '/',
+                    state: { from: location, roomID },
+                  }}
+                />
+              );
+            }}
           />
-          <Switch>
-            <Route
-              path="/:id"
-              render={({ location, match }) => {
-                const roomID = get(match, 'params.id');
-                // redirect if the roomID in auth doesn't match, or no credentials
-                return roomID &&
-                  auth.roomID === roomID &&
-                  !isNil(auth.credentials) &&
-                  !isNil(auth.playerID) ? (
-                  <Game auth={auth} />
-                ) : (
-                  <Redirect
-                    to={{
-                      pathname: '/',
-                      state: { from: location, roomID },
-                    }}
-                  />
-                );
-              }}
-            />
-            <Route path="/">
-              <Lobby setAuth={setAuth} />
-            </Route>
-          </Switch>
-        </Router>
-      </main>
+          <Route path="/">
+            <Lobby setAuth={setAuth} />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }

@@ -4,9 +4,10 @@ import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { Buzzer } from '../lib/store';
 import { GAME_SERVER } from '../lib/endpoints';
+import Header from '../components/Header';
 import Table from '../components/Table';
 
-export default function Game({ auth }) {
+export default function Game({ auth, setAuth }) {
   const { id: roomID } = useParams();
   const App = Client({
     game: Buzzer,
@@ -16,10 +17,20 @@ export default function Game({ auth }) {
   });
 
   return (
-    <App
-      gameID={roomID}
-      playerID={String(auth.playerID)}
-      credentials={auth.credentials}
-    />
+    <main id="game">
+      <div className="primary">
+        <Header
+          auth={auth}
+          clearAuth={() =>
+            setAuth({ playerID: null, credentials: null, roomID: null })
+          }
+        />
+        <App
+          gameID={roomID}
+          playerID={String(auth.playerID)}
+          credentials={auth.credentials}
+        />
+      </div>
+    </main>
   );
 }
