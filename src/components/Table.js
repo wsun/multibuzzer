@@ -92,7 +92,7 @@ export default function Table(game) {
         ) : null}
         <div id="buzzer">
           <button
-            disabled={buzzed}
+            disabled={buzzed || game.G.locked}
             onClick={() => {
               if (!buzzed) {
                 playSound();
@@ -101,7 +101,7 @@ export default function Table(game) {
               }
             }}
           >
-            Buzz
+            {game.G.locked ? 'Locked' : buzzed ? 'Buzzed' : 'Buzz'}
           </button>
         </div>
         <div id="settings">
@@ -111,6 +111,11 @@ export default function Table(game) {
               onClick={() => game.moves.resetBuzzers()}
             >
               Reset all buzzers
+            </button>
+          ) : null}
+          {isHost ? (
+            <button onClick={() => game.moves.toggleLock()}>
+              {game.G.locked ? 'Unlock buzzers' : 'Lock buzzers'}
             </button>
           ) : null}
           <button onClick={() => setSound(!sound)}>
