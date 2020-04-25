@@ -31,9 +31,14 @@ export default function Lobby({ setAuth }) {
   const [room, setRoom] = useState(prefilledRoomID || '');
   const [joinMode, setJoinMode] = useState(true);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   // enter room: find room, then join it
-  async function enterRoom(roomId) {
+  async function enterRoom(roomId, hosting = false) {
+    if (!hosting) {
+      setLoading(true);
+    }
+
     try {
       // get room
       const roomRes = await getRoom(roomId);
@@ -62,22 +67,26 @@ export default function Lobby({ setAuth }) {
 
       // save auth and go to room
       setAuth(auth);
+      setLoading(false);
       history.push(`/${room.roomID}`);
     } catch (error) {
+      setLoading(false);
       setError(ERROR_MESSAGE[error.message]);
     }
   }
 
   // make room: create room, then join it
   async function makeRoom() {
+    setLoading(true);
     try {
       const createRes = await createRoom();
       if (createRes.status !== 200) {
         throw new Error(ERROR_TYPE.hostRoom);
       }
       const roomID = createRes.data.gameID;
-      await enterRoom(roomID);
+      await enterRoom(roomID, true);
     } catch (error) {
+      setLoading(false);
       setError(ERROR_MESSAGE[error.message]);
     }
   }
@@ -131,7 +140,9 @@ export default function Lobby({ setAuth }) {
       </Form.Group>
 
       <div className="error-message">{error}</div>
-      <button type="submit">Join</button>
+      <button type="submit" disabled={loading}>
+        {loading ? 'Joining...' : 'Join'}
+      </button>
       <div className="switcher">
         Hosting a game?{' '}
         <button
@@ -160,7 +171,9 @@ export default function Lobby({ setAuth }) {
       </Form.Group>
 
       <div className="error-message">{error}</div>
-      <button type="submit">Host</button>
+      <button type="submit" disabled={loading}>
+        {loading ? 'Creating...' : 'Host'}
+      </button>
       <div className="switcher">
         Joining a game?{' '}
         <button

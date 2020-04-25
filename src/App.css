@@ -9,7 +9,6 @@
   --lightBlueColor: #aed1fb;
   --buttonHoverColor: #4898f6;
   --brightBlueColor: #348df5;
-  --darkBlueColor: #2463ac;
   --lightActiveColor: #62666f;
   --confirmButtonBackground: #4a5161;
   --confirmButtonHoverBackground: #3b404d;
@@ -20,6 +19,7 @@
   --dimTextColor: #91949a;
   --paragraphColor: #b4b4b4;
   --darkBlueColor: #2c313e;
+  --disabledBlueColor: #1a477b;
 }
 
 html,
@@ -211,6 +211,10 @@ body {
 
 .App .lobby-form button[type='submit']:hover {
   background-color: var(--buttonHoverColor);
+}
+
+.App .lobby-form button[type='submit']:disabled {
+  background-color: var(--disabledBlueColor);
 }
 
 .App .lobby-form button.inline {
