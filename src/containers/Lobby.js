@@ -6,6 +6,22 @@ import { joinRoom, getRoom, createRoom } from '../lib/endpoints';
 import Header from '../components/Header';
 import Footer, { FooterSimple } from '../components/Footer';
 
+const ERROR_TYPE = {
+  emptyCode: 'emptyCode',
+  roomCode: 'roomCode',
+  name: 'name',
+  hostRoom: 'hostRoom',
+  fullRoom: 'fullRoom',
+};
+
+const ERROR_MESSAGE = {
+  [ERROR_TYPE.emptyCode]: 'Please enter a room code',
+  [ERROR_TYPE.roomCode]: 'Unable to join room with this code',
+  [ERROR_TYPE.name]: 'Please enter your player name',
+  [ERROR_TYPE.hostRoom]: 'Unable to create room, please try again',
+  [ERROR_TYPE.fullRoom]: 'Room has reached capacity',
+};
+
 export default function Lobby({ setAuth }) {
   const location = useLocation();
   const prefilledRoomID = get(location, 'state.roomID');
@@ -14,26 +30,28 @@ export default function Lobby({ setAuth }) {
   const [name, setName] = useState('');
   const [room, setRoom] = useState(prefilledRoomID || '');
   const [joinMode, setJoinMode] = useState(true);
+  const [error, setError] = useState('');
 
   // enter room: find room, then join it
   async function enterRoom(roomId) {
     try {
       // get room
       const roomRes = await getRoom(roomId);
-      if (roomRes.status !== 200)
-        throw new Error(`Server room error ${roomRes.status}`);
+      if (roomRes.status !== 200) {
+        throw new Error(ERROR_TYPE.roomCode);
+      }
       const room = roomRes.data;
 
       // determine seat to take
       const playerSeat = room.players.find((player) => player.name === name);
       const freeSeat = room.players.find((player) => !player.name);
       if (!playerSeat && !freeSeat) {
-        throw new Error('Room is full');
+        throw new Error(ERROR_TYPE.fullRoom);
       }
       const playerID = get(playerSeat, 'id') || get(freeSeat, 'id');
       const joinRes = await joinRoom(room.roomID, playerID, name);
       if (joinRes.status !== 200) {
-        throw new Error(`Join room error ${joinRes.status}`);
+        throw new Error(ERROR_TYPE.roomCode);
       }
       const creds = joinRes.data;
       const auth = {
@@ -46,7 +64,7 @@ export default function Lobby({ setAuth }) {
       setAuth(auth);
       history.push(`/${room.roomID}`);
     } catch (error) {
-      console.log('joinError', error);
+      setError(ERROR_MESSAGE[error.message]);
     }
   }
 
@@ -55,21 +73,35 @@ export default function Lobby({ setAuth }) {
     try {
       const createRes = await createRoom();
       if (createRes.status !== 200) {
-        throw new Error(`Create room error ${createRes.status}`);
+        throw new Error(ERROR_TYPE.hostRoom);
       }
       const roomID = createRes.data.gameID;
       await enterRoom(roomID);
     } catch (error) {
-      console.log('createError', error);
+      setError(ERROR_MESSAGE[error.message]);
     }
   }
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    // validate room and/or player name has been filled
     if (joinMode) {
-      enterRoom(room);
+      if (room.trim().length === 0) {
+        setError(ERROR_MESSAGE[ERROR_TYPE.emptyCode]);
+      } else if (name.trim().length === 0) {
+        setError(ERROR_MESSAGE[ERROR_TYPE.name]);
+      } else if (room.trim().length !== 6) {
+        setError(ERROR_MESSAGE[ERROR_TYPE.roomCode]);
+      } else {
+        enterRoom(room);
+      }
     } else {
-      makeRoom();
+      if (name.trim().length === 0) {
+        setError(ERROR_MESSAGE[ERROR_TYPE.name]);
+      } else {
+        makeRoom();
+      }
     }
   }
 
@@ -78,18 +110,37 @@ export default function Lobby({ setAuth }) {
       <h3>Join a game</h3>
       <Form.Group controlId="room">
         <Form.Label>Room code</Form.Label>
-        <Form.Control value={room} onChange={(e) => setRoom(e.target.value)} />
+        <Form.Control
+          value={room}
+          onChange={(e) => {
+            setError('');
+            setRoom(e.target.value);
+          }}
+        />
       </Form.Group>
 
       <Form.Group controlId="name">
         <Form.Label>Your name</Form.Label>
-        <Form.Control value={name} onChange={(e) => setName(e.target.value)} />
+        <Form.Control
+          value={name}
+          onChange={(e) => {
+            setError('');
+            setName(e.target.value);
+          }}
+        />
       </Form.Group>
 
+      <div className="error-message">{error}</div>
       <button type="submit">Join</button>
       <div className="switcher">
         Hosting a game?{' '}
-        <button className="inline" onClick={() => setJoinMode(false)}>
+        <button
+          className="inline"
+          onClick={() => {
+            setError('');
+            setJoinMode(false);
+          }}
+        >
           Create room
         </button>
       </div>
@@ -99,13 +150,26 @@ export default function Lobby({ setAuth }) {
       <h3>Host a game</h3>
       <Form.Group controlId="name">
         <Form.Label>Your name</Form.Label>
-        <Form.Control value={name} onChange={(e) => setName(e.target.value)} />
+        <Form.Control
+          value={name}
+          onChange={(e) => {
+            setError('');
+            setName(e.target.value);
+          }}
+        />
       </Form.Group>
 
+      <div className="error-message">{error}</div>
       <button type="submit">Host</button>
       <div className="switcher">
         Joining a game?{' '}
-        <button className="inline" onClick={() => setJoinMode(true)}>
+        <button
+          className="inline"
+          onClick={() => {
+            setError('');
+            setJoinMode(true);
+          }}
+        >
           Enter room
         </button>
       </div>

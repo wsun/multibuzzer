@@ -16,31 +16,69 @@ export const GAME_SERVER =
   process.env.NODE_ENV === 'production' ? url : localUrl;
 
 export async function getRoom(roomId) {
-  return await axios.get(`${LOBBY_SERVER}/games/${Buzzer.name}/${roomId}`);
+  try {
+    const response = await axios.get(
+      `${LOBBY_SERVER}/games/${Buzzer.name}/${roomId}`
+    );
+    return response;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    } else {
+      return { status: 500 };
+    }
+  }
 }
 
 export async function createRoom() {
-  return await axios.post(`${LOBBY_SERVER}/games/${Buzzer.name}/create`, {
-    numPlayers: 100,
-  });
+  try {
+    const response = axios.post(`${LOBBY_SERVER}/games/${Buzzer.name}/create`, {
+      numPlayers: 100,
+    });
+    return response;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    } else {
+      return { status: 500 };
+    }
+  }
 }
 
 export async function joinRoom(roomID, playerID, playerName) {
-  return await axios.post(
-    `${LOBBY_SERVER}/games/${Buzzer.name}/${roomID}/join`,
-    {
-      playerID,
-      playerName,
+  try {
+    const response = axios.post(
+      `${LOBBY_SERVER}/games/${Buzzer.name}/${roomID}/join`,
+      {
+        playerID,
+        playerName,
+      }
+    );
+    return response;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    } else {
+      return { status: 500 };
     }
-  );
+  }
 }
 
 export async function leaveRoom(roomID, playerID, credentials) {
-  return await axios.post(
-    `${LOBBY_SERVER}/games/${Buzzer.name}/${roomID}/leave`,
-    {
-      playerID,
-      credentials,
+  try {
+    const response = axios.post(
+      `${LOBBY_SERVER}/games/${Buzzer.name}/${roomID}/leave`,
+      {
+        playerID,
+        credentials,
+      }
+    );
+    return response;
+  } catch (error) {
+    if (error.response) {
+      return error.response;
+    } else {
+      return { status: 500 };
     }
-  );
+  }
 }

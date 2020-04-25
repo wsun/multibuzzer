@@ -3,6 +3,7 @@
   --lightBackgroundColor: #343a48;
   --darkColor: #444444;
   --redColor: #d0021b;
+  --lightRedColor: #e36776;
   --yellowColor: #fff3c8;
   --greenColor: #a7ff91;
   --lightBlueColor: #aed1fb;
@@ -190,6 +191,14 @@ body {
 
 .App .lobby-form .form-group:not(:first-of-type) {
   margin-top: 2rem;
+}
+
+.App .lobby-form .error-message {
+  height: 1rem;
+  font-size: 0.9rem;
+  color: var(--lightRedColor);
+  font-weight: 500;
+  text-align: center;
 }
 
 .App .lobby-form button[type='submit'] {
