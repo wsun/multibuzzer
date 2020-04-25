@@ -16,9 +16,11 @@ export const GAME_SERVER =
   process.env.NODE_ENV === 'production' ? url : localUrl;
 
 export async function getRoom(roomId) {
+  // convert to uppercase
+  const cleanRoomId = roomId.toUpperCase();
   try {
     const response = await axios.get(
-      `${LOBBY_SERVER}/games/${Buzzer.name}/${roomId}`
+      `${LOBBY_SERVER}/games/${Buzzer.name}/${cleanRoomId}`
     );
     return response;
   } catch (error) {

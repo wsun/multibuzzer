@@ -53,7 +53,7 @@ export default function Lobby({ setAuth }) {
       if (!playerSeat && !freeSeat) {
         throw new Error(ERROR_TYPE.fullRoom);
       }
-      const playerID = get(playerSeat, 'id') || get(freeSeat, 'id');
+      const playerID = get(playerSeat, 'id', get(freeSeat, 'id'));
       const joinRes = await joinRoom(room.roomID, playerID, name);
       if (joinRes.status !== 200) {
         throw new Error(ERROR_TYPE.roomCode);
