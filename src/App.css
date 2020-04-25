@@ -16,11 +16,13 @@
   --darkActiveColor: #2d313a;
   --activeColor: #3b404b;
 
+  --dimTextColor: #91949a;
   --paragraphColor: #b4b4b4;
   --darkBlueColor: #2c313e;
 }
 
-html {
+html,
+body {
   background-color: var(--backgroundColor);
 }
 
@@ -43,7 +45,7 @@ html {
 .App header .navbar-brand {
   color: white;
   font-weight: 600;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -79,7 +81,7 @@ html {
 
 .App header nav button {
   font-weight: 500;
-  color: var(--lightActiveColor);
+  color: var(--dimTextColor);
   border: none;
 }
 
@@ -93,6 +95,7 @@ html {
   padding: 30px 0;
   color: var(--paragraphColor);
   text-align: center;
+  margin-top: 40px;
 }
 
 .App #footer-simple {
@@ -194,6 +197,7 @@ html {
   background-color: var(--brightBlueColor);
   border: none;
   margin-top: 1rem;
+  padding: 12px 15px;
 }
 
 .App .lobby-form button[type='submit']:hover {
@@ -212,7 +216,7 @@ html {
 
 .App .lobby-form .switcher {
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   font-size: 0.9rem;
 }
 
@@ -238,6 +242,9 @@ html {
 
 .App #buzzer {
   margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .App #buzzer > button {
@@ -249,6 +256,7 @@ html {
   border: none;
   font-weight: 700;
   font-size: 2rem;
+  user-select: none;
 }
 
 .App #buzzer > button:hover {
@@ -261,6 +269,13 @@ html {
 
 .App #buzzer > button:disabled {
   background-color: var(--lightBackgroundColor);
+}
+
+@media screen and (max-width: 767px) {
+  .App #buzzer > button {
+    max-width: 200px;
+    max-height: 200px;
+  }
 }
 
 .App #settings {

@@ -77,37 +77,41 @@ export default function Table(game) {
 
   return (
     <div>
-      <p id="room-title">Room {game.gameID}</p>
-      {!game.isConnected ? (
-        <p className="warning">Your connection is unstable - please refresh</p>
-      ) : null}
-      <div id="buzzer">
-        <button
-          disabled={buzzed}
-          onClick={() => {
-            if (!buzzed) {
-              playSound();
-              game.moves.buzz(game.playerID);
-              setBuzzer(true);
-            }
-          }}
-        >
-          Buzz
-        </button>
-      </div>
-      <div id="settings">
-        {isHost ? (
-          <button
-            disabled={game.G.queue.length === 0}
-            onClick={() => game.moves.resetBuzzers()}
-          >
-            Reset all buzzers
-          </button>
+      <section className="mobile-fixed">
+        <p id="room-title">Room {game.gameID}</p>
+        {!game.isConnected ? (
+          <p className="warning">
+            Your connection is unstable - please refresh
+          </p>
         ) : null}
-        <button onClick={() => setSound(!sound)}>
-          {sound ? 'Turn off sound' : 'Turn on sound '}
-        </button>
-      </div>
+        <div id="buzzer">
+          <button
+            disabled={buzzed}
+            onClick={() => {
+              if (!buzzed) {
+                playSound();
+                game.moves.buzz(game.playerID);
+                setBuzzer(true);
+              }
+            }}
+          >
+            Buzz
+          </button>
+        </div>
+        <div id="settings">
+          {isHost ? (
+            <button
+              disabled={game.G.queue.length === 0}
+              onClick={() => game.moves.resetBuzzers()}
+            >
+              Reset all buzzers
+            </button>
+          ) : null}
+          <button onClick={() => setSound(!sound)}>
+            {sound ? 'Turn off sound' : 'Turn on sound '}
+          </button>
+        </div>
+      </section>
       <div className="queue">
         <p>Players Buzzed</p>
         <ul>
