@@ -238,6 +238,10 @@ body {
 }
 
 /* GAME */
+.App #game .container-loading {
+  margin-top: 80px;
+  text-align: center;
+}
 
 .App .bgio-client {
   text-align: center;
