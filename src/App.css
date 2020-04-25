@@ -253,7 +253,7 @@ body {
 }
 
 .App .warning {
-  color: var(--redColor);
+  color: var(--lightRedColor);
   font-weight: 500;
 }
 

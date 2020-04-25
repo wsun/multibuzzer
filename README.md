@@ -2,7 +2,7 @@
 
 Simple multiplayer buzzer system, e.g. for remote quiz bowl!
 
-https://multibuzzer.herokuapp.com
+https://multibuzz.app
 
 Built using Create React App and boardgame.io
 

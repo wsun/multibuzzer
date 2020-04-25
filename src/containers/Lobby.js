@@ -121,6 +121,10 @@ export default function Lobby({ setAuth }) {
         <Form.Label>Room code</Form.Label>
         <Form.Control
           value={room}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="characters"
+          spellCheck="false"
           onChange={(e) => {
             setError('');
             setRoom(e.target.value);
