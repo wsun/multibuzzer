@@ -15,21 +15,15 @@ function buzz(G, ctx, id) {
   G.queue = newQueue;
 }
 
-function restart(G, ctx) {
-  G.queue = {};
-  G.hostId = null;
-  ctx.events.setPhase('setHost');
-}
-
 export const Buzzer = {
   name: 'buzzer',
   minPlayers: 2,
   maxPlayers: 100,
-  setup: () => ({ hostId: '0', queue: {} }),
+  setup: () => ({ queue: {} }),
   phases: {
     play: {
       start: true,
-      moves: { buzz, resetBuzzers, restart },
+      moves: { buzz, resetBuzzers },
       turn: {
         activePlayers: ActivePlayers.ALL,
       },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { some, values, sortBy, orderBy, isEmpty, round } from 'lodash';
+import { get, some, values, sortBy, orderBy, isEmpty, round } from 'lodash';
 import { Howl } from 'howler';
 import { AiOutlineDisconnect } from 'react-icons/ai';
 
@@ -10,7 +10,6 @@ export default function Table(game) {
   );
   const [sound, setSound] = useState(false);
   const [soundPlayed, setSoundPlayed] = useState(false);
-  const isHost = game.G.hostId === game.playerID;
 
   const buzzSound = new Howl({
     src: [
@@ -49,6 +48,13 @@ export default function Table(game) {
   const players = game.gameMetadata
     .filter((p) => p.name)
     .map((p) => ({ ...p, id: String(p.id) }));
+  // host is lowest user
+  const firstPlayer =
+    get(
+      sortBy(players, (p) => parseInt(p.id, 10)),
+      '0'
+    ) || null;
+  const isHost = get(firstPlayer, 'id') === game.playerID;
 
   const queue = sortBy(values(game.G.queue), ['timestamp']);
   const buzzedPlayers = queue
