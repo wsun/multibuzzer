@@ -12,12 +12,14 @@ const ERROR_TYPE = {
   name: 'name',
   hostRoom: 'hostRoom',
   fullRoom: 'fullRoom',
+  dupName: 'dupName',
 };
 
 const ERROR_MESSAGE = {
   [ERROR_TYPE.emptyCode]: 'Please enter a room code',
   [ERROR_TYPE.roomCode]: 'Unable to join room with this code',
   [ERROR_TYPE.name]: 'Please enter your player name',
+  [ERROR_TYPE.dupName]: 'Player name already taken',
   [ERROR_TYPE.hostRoom]: 'Unable to create room, please try again',
   [ERROR_TYPE.fullRoom]: 'Room has reached capacity',
 };
@@ -50,6 +52,10 @@ export default function Lobby({ setAuth }) {
       // determine seat to take
       const playerSeat = room.players.find((player) => player.name === name);
       const freeSeat = room.players.find((player) => !player.name);
+
+      if (playerSeat && playerSeat.connected) {
+        throw new Error(ERROR_TYPE.dupName);
+      }
       if (!playerSeat && !freeSeat) {
         throw new Error(ERROR_TYPE.fullRoom);
       }

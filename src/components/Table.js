@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { get, some, values, sortBy, orderBy, isEmpty, round } from 'lodash';
 import { Howl } from 'howler';
 import { AiOutlineDisconnect } from 'react-icons/ai';
+import { Container } from 'react-bootstrap';
+import Header from '../components/Header';
 
 export default function Table(game) {
   const [loaded, setLoaded] = useState(false);
@@ -86,59 +88,98 @@ export default function Table(game) {
 
   return (
     <div>
-      <section className="mobile-fixed">
-        <p id="room-title">Room {game.gameID}</p>
-        {!game.isConnected ? (
-          <p className="warning">
-            Your connection is unstable - please refresh
-          </p>
-        ) : null}
-        <div id="buzzer">
-          <button
-            disabled={buzzed || game.G.locked}
-            onClick={() => {
-              if (!buzzed) {
-                playSound();
-                game.moves.buzz(game.playerID);
-                setBuzzer(true);
-              }
-            }}
-          >
-            {game.G.locked ? 'Locked' : buzzed ? 'Buzzed' : 'Buzz'}
-          </button>
-        </div>
-        <div id="settings">
-          {isHost ? (
+      <Header
+        auth={game.headerData}
+        clearAuth={() =>
+          game.headerData.setAuth({
+            playerID: null,
+            credentials: null,
+            roomID: null,
+          })
+        }
+        sound={sound}
+        setSound={() => setSound(!sound)}
+      />
+      <Container>
+        <section>
+          <p id="room-title">Room {game.gameID}</p>
+          {!game.isConnected ? (
+            <p className="warning">
+              Your connection is unstable - please refresh
+            </p>
+          ) : null}
+          <div id="buzzer">
             <button
-              disabled={game.G.queue.length === 0}
-              onClick={() => game.moves.resetBuzzers()}
+              disabled={buzzed || game.G.locked}
+              onClick={() => {
+                if (!buzzed) {
+                  playSound();
+                  game.moves.buzz(game.playerID);
+                  setBuzzer(true);
+                }
+              }}
             >
-              Reset all buzzers
+              {game.G.locked ? 'Locked' : buzzed ? 'Buzzed' : 'Buzz'}
             </button>
-          ) : null}
+          </div>
           {isHost ? (
-            <button onClick={() => game.moves.toggleLock()}>
-              {game.G.locked ? 'Unlock buzzers' : 'Lock buzzers'}
-            </button>
+            <div className="settings">
+              <div className="button-container">
+                <button
+                  className="text-button"
+                  onClick={() => game.moves.toggleLock()}
+                >
+                  {game.G.locked ? 'Unlock buzzers' : 'Lock buzzers'}
+                </button>
+              </div>
+              <div className="button-container">
+                <button
+                  disabled={isEmpty(game.G.queue)}
+                  onClick={() => game.moves.resetBuzzers()}
+                >
+                  Reset all buzzers
+                </button>
+              </div>
+              <div className="divider" />
+            </div>
           ) : null}
-          <button onClick={() => setSound(!sound)}>
-            {sound ? 'Turn off sound' : 'Turn on sound '}
-          </button>
+        </section>
+        <div className="queue">
+          <p>Players Buzzed</p>
+          <ul>
+            {buzzedPlayers.map(({ id, name, timestamp, connected }, i) => (
+              <li key={id} className={isHost ? 'resettable' : null}>
+                <div
+                  className="player-sign"
+                  onClick={() => {
+                    if (isHost) {
+                      game.moves.resetBuzzer(id);
+                    }
+                  }}
+                >
+                  <div className={`name ${!connected ? 'dim' : ''}`}>
+                    {name}
+                    {!connected ? (
+                      <AiOutlineDisconnect className="disconnected" />
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                  {i > 0 ? (
+                    <div className="mini">
+                      {timeDisplay(timestamp - queue[0].timestamp)}
+                    </div>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </section>
-      <div className="queue">
-        <p>Players Buzzed</p>
-        <ul>
-          {buzzedPlayers.map(({ id, name, timestamp, connected }, i) => (
-            <li key={id} className={isHost ? 'resettable' : null}>
-              <div
-                className="player-sign"
-                onClick={() => {
-                  if (isHost) {
-                    game.moves.resetBuzzer(id);
-                  }
-                }}
-              >
+        <div className="queue">
+          <p>Other Players</p>
+          <ul>
+            {activePlayers.map(({ id, name, connected }) => (
+              <li key={id}>
                 <div className={`name ${!connected ? 'dim' : ''}`}>
                   {name}
                   {!connected ? (
@@ -147,33 +188,11 @@ export default function Table(game) {
                     ''
                   )}
                 </div>
-                {i > 0 ? (
-                  <div className="mini">
-                    {timeDisplay(timestamp - queue[0].timestamp)}
-                  </div>
-                ) : null}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="queue">
-        <p>Other Players</p>
-        <ul>
-          {activePlayers.map(({ id, name, connected }) => (
-            <li key={id}>
-              <div className={`name ${!connected ? 'dim' : ''}`}>
-                {name}
-                {!connected ? (
-                  <AiOutlineDisconnect className="disconnected" />
-                ) : (
-                  ''
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Container>
     </div>
   );
 }

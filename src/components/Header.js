@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar } from 'react-bootstrap';
+import { isNil } from 'lodash';
 import { useHistory } from 'react-router';
 import { leaveRoom } from '../lib/endpoints';
 
@@ -20,7 +21,12 @@ function Logo({ size = 25 }) {
   );
 }
 
-export default function Header({ auth = {}, clearAuth }) {
+export default function Header({
+  auth = {},
+  clearAuth,
+  sound = null,
+  setSound,
+}) {
   const history = useHistory();
 
   // leave current game
@@ -42,7 +48,18 @@ export default function Header({ auth = {}, clearAuth }) {
         <Navbar.Brand>
           <Logo /> Multibuzzer
         </Navbar.Brand>
-        {clearAuth ? <button onClick={() => leave()}>Leave game</button> : null}
+        <div className="nav-buttons">
+          {!isNil(sound) ? (
+            <button className="text-button" onClick={() => setSound()}>
+              {sound ? 'Sound off' : 'Sound on '}
+            </button>
+          ) : null}
+          {clearAuth ? (
+            <button className="text-button" onClick={() => leave()}>
+              Leave game
+            </button>
+          ) : null}
+        </div>
       </Navbar>
     </header>
   );

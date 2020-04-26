@@ -1,21 +1,14 @@
 :root {
   --backgroundColor: #282c35;
   --lightBackgroundColor: #343a48;
-  --darkColor: #444444;
   --redColor: #d0021b;
   --lightRedColor: #e36776;
   --yellowColor: #fff3c8;
   --greenColor: #a7ff91;
   --lightBlueColor: #aed1fb;
-  --buttonHoverColor: #4898f6;
+  --hoverBlueColor: #4898f6;
   --brightBlueColor: #348df5;
-  --lightActiveColor: #62666f;
-  --confirmButtonBackground: #4a5161;
-  --confirmButtonHoverBackground: #3b404d;
-  --disabledButtonText: #8f8f8f;
-  --darkActiveColor: #2d313a;
   --activeColor: #3b404b;
-
   --dimTextColor: #91949a;
   --paragraphColor: #b4b4b4;
   --darkBlueColor: #2c313e;
@@ -43,6 +36,10 @@ body {
   background-color: var(--backgroundColor);
 }
 
+.App header nav {
+  min-height: 60px;
+}
+
 .App header .navbar-brand {
   color: white;
   font-weight: 600;
@@ -64,6 +61,12 @@ body {
   margin-right: 10px;
 }
 
+.App header .nav-buttons > :not(:first-child) {
+  margin-left: 5px;
+}
+
+/* BUTTON */
+
 .App button {
   background: none;
   font-weight: 700;
@@ -72,7 +75,7 @@ body {
   border-radius: 4px;
 }
 
-.App button:hover {
+.App button:hover:enabled {
   background-color: var(--lightBackgroundColor);
 }
 
@@ -80,13 +83,13 @@ body {
   outline: none;
 }
 
-.App header nav button {
+.App button.text-button {
   font-weight: 500;
   color: var(--dimTextColor);
   border: none;
 }
 
-.App header nav button:hover {
+.App button.text-button:hover {
   color: white;
 }
 
@@ -162,7 +165,7 @@ body {
   max-width: 400px;
 }
 
-.App #lobby .divider {
+.App .divider {
   border: 1px solid var(--activeColor);
   margin: 60px auto;
   width: 75%;
@@ -210,7 +213,7 @@ body {
 }
 
 .App .lobby-form button[type='submit']:hover {
-  background-color: var(--buttonHoverColor);
+  background-color: var(--hoverBlueColor);
 }
 
 .App .lobby-form button[type='submit']:disabled {
@@ -243,7 +246,7 @@ body {
   text-align: center;
 }
 
-.App .bgio-client {
+.App #game .container {
   text-align: center;
   margin-top: 20px;
 }
@@ -277,7 +280,7 @@ body {
 }
 
 .App #buzzer > button:hover {
-  background-color: var(--buttonHoverColor);
+  background-color: var(--hoverBlueColor);
 }
 
 .App #buzzer > button:active {
@@ -295,12 +298,21 @@ body {
   }
 }
 
-.App #settings {
-  margin: 30px 0;
+.App .settings {
+  margin-top: 30px;
 }
 
-.App #settings > :not(:first-child) {
-  margin-left: 10px;
+.App .settings > .button-container:not(:first-child) {
+  margin-top: 10px;
+}
+
+.App .settings button:hover:disabled {
+  background-color: none;
+}
+
+.App .settings .divider {
+  margin: 40px auto;
+  width: 50%;
 }
 
 .App #reset {
@@ -308,7 +320,7 @@ body {
 }
 
 .App .queue {
-  margin-bottom: 40px;
+  margin-top: 40px;
 }
 
 .App .queue p {
