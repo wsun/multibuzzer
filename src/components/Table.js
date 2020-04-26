@@ -60,6 +60,9 @@ export default function Table(game) {
   const buzzedPlayers = queue
     .map((p) => {
       const player = players.find((player) => player.id === p.id);
+      if (!player) {
+        return {};
+      }
       return {
         ...p,
         name: player.name,
@@ -127,20 +130,29 @@ export default function Table(game) {
         <p>Players Buzzed</p>
         <ul>
           {buzzedPlayers.map(({ id, name, timestamp, connected }, i) => (
-            <li key={id}>
-              <div className={`bold ${!connected ? 'dim' : ''}`}>
-                {name}
-                {!connected ? (
-                  <AiOutlineDisconnect className="disconnected" />
-                ) : (
-                  ''
-                )}
-              </div>
-              {i > 0 ? (
-                <div className="mini">
-                  {timeDisplay(timestamp - queue[0].timestamp)}
+            <li key={id} className={isHost ? 'resettable' : null}>
+              <div
+                className="player-sign"
+                onClick={() => {
+                  if (isHost) {
+                    game.moves.resetBuzzer(id);
+                  }
+                }}
+              >
+                <div className={`name ${!connected ? 'dim' : ''}`}>
+                  {name}
+                  {!connected ? (
+                    <AiOutlineDisconnect className="disconnected" />
+                  ) : (
+                    ''
+                  )}
                 </div>
-              ) : null}
+                {i > 0 ? (
+                  <div className="mini">
+                    {timeDisplay(timestamp - queue[0].timestamp)}
+                  </div>
+                ) : null}
+              </div>
             </li>
           ))}
         </ul>
@@ -150,7 +162,7 @@ export default function Table(game) {
         <ul>
           {activePlayers.map(({ id, name, connected }) => (
             <li key={id}>
-              <div className={`bold ${!connected ? 'dim' : ''}`}>
+              <div className={`name ${!connected ? 'dim' : ''}`}>
                 {name}
                 {!connected ? (
                   <AiOutlineDisconnect className="disconnected" />

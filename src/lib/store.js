@@ -4,6 +4,12 @@ function resetBuzzers(G) {
   G.queue = {};
 }
 
+function resetBuzzer(G, ctx, id) {
+  const newQueue = { ...G.queue };
+  delete newQueue[id];
+  G.queue = newQueue;
+}
+
 function toggleLock(G) {
   G.locked = !G.locked;
 }
@@ -27,7 +33,7 @@ export const Buzzer = {
   phases: {
     play: {
       start: true,
-      moves: { buzz, resetBuzzers, toggleLock },
+      moves: { buzz, resetBuzzer, resetBuzzers, toggleLock },
       turn: {
         activePlayers: ActivePlayers.ALL,
       },

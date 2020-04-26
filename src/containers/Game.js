@@ -37,11 +37,13 @@ export default function Game({ auth, setAuth }) {
             setAuth({ playerID: null, credentials: null, roomID: null })
           }
         />
-        <App
-          gameID={roomID}
-          playerID={String(auth.playerID)}
-          credentials={auth.credentials}
-        />
+        <Container>
+          <App
+            gameID={roomID}
+            playerID={String(auth.playerID)}
+            credentials={auth.credentials}
+          />
+        </Container>
       </div>
     </main>
   );
