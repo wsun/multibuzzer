@@ -50,10 +50,10 @@ export default function Table(game) {
   const players = game.gameMetadata
     .filter((p) => p.name)
     .map((p) => ({ ...p, id: String(p.id) }));
-  // host is lowest user
+  // host is lowest active user
   const firstPlayer =
     get(
-      sortBy(players, (p) => parseInt(p.id, 10)),
+      sortBy(players, (p) => parseInt(p.id, 10)).filter((p) => p.connected),
       '0'
     ) || null;
   const isHost = get(firstPlayer, 'id') === game.playerID;
@@ -104,9 +104,7 @@ export default function Table(game) {
         <section>
           <p id="room-title">Room {game.gameID}</p>
           {!game.isConnected ? (
-            <p className="warning">
-              Your connection is unstable - please refresh
-            </p>
+            <p className="warning">Disconnected - attempting to reconnect...</p>
           ) : null}
           <div id="buzzer">
             <button

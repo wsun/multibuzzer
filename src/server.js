@@ -1,5 +1,6 @@
 import path from 'path';
 import serve from 'koa-static';
+import ratelimit from 'koa-ratelimit';
 
 const Server = require('boardgame.io/server').Server;
 const Buzzer = require('./lib/store').Buzzer;
@@ -18,6 +19,23 @@ function randomString(length, chars) {
     result += chars[Math.floor(Math.random() * chars.length)];
   return result;
 }
+
+// rate limiter
+const db = new Map();
+app.use(
+  ratelimit({
+    driver: 'memory',
+    db: db,
+    // 1 min window
+    duration: 60000,
+    errorMessage: 'Too many requests',
+    id: (ctx) => ctx.ip,
+    max: 25,
+    whitelist: (ctx) => {
+      return !ctx.path.includes(`games/${Buzzer.name}`);
+    },
+  })
+);
 
 server.run(
   {
