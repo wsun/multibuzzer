@@ -1437,9 +1437,9 @@
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
 "@types/node@*":
-  version "13.13.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.4.tgz#1581d6c16e3d4803eb079c87d4ac893ee7501c2c"
-  integrity sha512-x26ur3dSXgv5AwKS0lNfbjpCakGIduWU1DU91Zz58ONRWrIKGunmZBNv4P7N+e27sJkiGDsw/3fT4AtsqQBrBA==
+  version "14.0.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.1.tgz#5d93e0a099cd0acd5ef3d5bde3c086e1f49ff68c"
+  integrity sha512-FAYBGwC+W6F9+huFIDtn43cpy7+SzG+atzRiTfdp3inUKL2hXnd4rG8hylJLIh4+hqrQy1P17kvJByE/z825hA==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -8931,9 +8931,9 @@ qs@6.7.0:
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
 
 qs@^6.4.0:
-  version "6.9.3"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.3.tgz#bfadcd296c2d549f1dffa560619132c977f5008e"
-  integrity sha512-EbZYNarm6138UKKq46tdx08Yo/q9ZhFoAXAI1meAFd2GtbRDhbZY2WQSICskT0c5q99aFzLG1D4nvTk9tqfXIw==
+  version "6.9.4"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
+  integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
 
 qs@~6.5.2:
   version "6.5.2"
@@ -10768,9 +10768,9 @@ ts-pnp@1.1.6, ts-pnp@^1.1.6:
   integrity sha512-CrG5GqAAzMT7144Cl+UIFP7mz/iIhiy+xQ6GGcnjTezhALT02uPMRw7tgDSESgB5MsfKt55+GPWw4ir1kVtMIQ==
 
 ts-toolbelt@^6.3.6:
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.5.1.tgz#1316b8c6522797c0bee289ca5deaa159af846231"
-  integrity sha512-zjnZ/vy1eUA0li3H0JXecl0R3jiP42snpLimsrppt9V3LLbM4NM4jMgjXQ4S67hvehq+r9CxpX4Wj6RnFRzReA==
+  version "6.7.4"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.7.4.tgz#30e6999578a82ed4636563cb525bb3664a255760"
+  integrity sha512-cP8q7BnIyuevMyBpq+TVKf3NvSS70S+BLdhzHVeV/5WNPMoUxN5YWMKgUd54qAwWgk6n2USHi/2XFIxZJa+30g==
 
 tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.11.1"
@@ -11528,9 +11528,9 @@ ws@^6.1.2, ws@^6.2.1:
     async-limiter "~1.0.0"
 
 ws@^7.1.2:
-  version "7.2.5"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.2.5.tgz#abb1370d4626a5a9cd79d8de404aa18b3465d10d"
-  integrity sha512-C34cIU4+DB2vMyAbmEKossWq2ZQDr6QEyuuCzWrM9zfw1sGc0mYiJ0UnG9zzNykt49C2Fi34hvr2vssFQRS6EA==
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.0.tgz#4b2f7f219b3d3737bc1a2fbf145d825b94d38ffd"
+  integrity sha512-iFtXzngZVXPGgpTlP1rBqsUK82p9tKqsWRPg5L56egiljujJT3vGAYnHANvFxBieXrTFavhzhxW52jnaWV+w2w==
 
 ws@~6.1.0:
   version "6.1.4"

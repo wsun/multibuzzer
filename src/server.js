@@ -11,7 +11,13 @@ const PORT = process.env.PORT || 4001;
 const { app } = server;
 
 const FRONTEND_PATH = path.join(__dirname, '../build');
-app.use(serve(FRONTEND_PATH));
+app.use(
+  serve(FRONTEND_PATH, {
+    setHeaders: (res) => {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+    },
+  })
+);
 
 function randomString(length, chars) {
   let result = '';
