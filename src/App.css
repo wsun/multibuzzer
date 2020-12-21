@@ -9,7 +9,8 @@
   --hoverBlueColor: #4898f6;
   --brightBlueColor: #348df5;
   --activeColor: #3b404b;
-  --dimTextColor: #91949a;
+  --dimTextColor: #a7a9ae;
+  --disabledTextColor: #57595c;
   --paragraphColor: #b4b4b4;
   --darkBlueColor: #2c313e;
   --disabledBlueColor: #1a477b;
@@ -73,6 +74,12 @@ body {
   color: white;
   padding: 8px 10px;
   border-radius: 4px;
+  border: solid 1px white;
+}
+
+.App button:disabled {
+  border-color: var(--disabledTextColor);
+  color: var(--disabledTextColor);
 }
 
 .App button:hover:enabled {
