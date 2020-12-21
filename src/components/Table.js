@@ -47,6 +47,25 @@ export default function Table(game) {
     }
   }, [game.G.queue]);
 
+  const attemptBuzz = () => {
+    if (!buzzed) {
+      playSound();
+      game.moves.buzz(game.playerID);
+      setBuzzer(true);
+    }
+  };
+
+  // spacebar will buzz
+  useEffect(() => {
+    function onKeydown(e) {
+      if (e.keyCode === 32) {
+        attemptBuzz();
+      }
+    }
+    window.addEventListener('keydown', onKeydown);
+    return () => window.removeEventListener('keydown', onKeydown);
+  }, []);
+
   const players = !game.gameMetadata
     ? []
     : game.gameMetadata
@@ -112,11 +131,7 @@ export default function Table(game) {
             <button
               disabled={buzzed || game.G.locked}
               onClick={() => {
-                if (!buzzed) {
-                  playSound();
-                  game.moves.buzz(game.playerID);
-                  setBuzzer(true);
-                }
+                attemptBuzz();
               }}
             >
               {game.G.locked ? 'Locked' : buzzed ? 'Buzzed' : 'Buzz'}
