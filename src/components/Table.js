@@ -58,7 +58,7 @@ export default function Table(game) {
   // spacebar will buzz
   useEffect(() => {
     function onKeydown(e) {
-      if (e.keyCode === 32) {
+      if (e.keyCode === 32 && !e.repeat) {
         attemptBuzz();
       }
     }
