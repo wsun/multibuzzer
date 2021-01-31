@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { get, some, values, sortBy, orderBy, isEmpty, round } from 'lodash';
 import { Howl } from 'howler';
 import { AiOutlineDisconnect } from 'react-icons/ai';
@@ -12,6 +12,7 @@ export default function Table(game) {
   );
   const [sound, setSound] = useState(false);
   const [soundPlayed, setSoundPlayed] = useState(false);
+  const buzzButton = useRef(null);
 
   const buzzSound = new Howl({
     src: [
@@ -59,7 +60,8 @@ export default function Table(game) {
   useEffect(() => {
     function onKeydown(e) {
       if (e.keyCode === 32 && !e.repeat) {
-        attemptBuzz();
+        buzzButton.current.click();
+        e.preventDefault();
       }
     }
     window.addEventListener('keydown', onKeydown);
@@ -129,9 +131,12 @@ export default function Table(game) {
           ) : null}
           <div id="buzzer">
             <button
+              ref={buzzButton}
               disabled={buzzed || game.G.locked}
               onClick={() => {
-                attemptBuzz();
+                if (!buzzed && !game.G.locked) {
+                  attemptBuzz();
+                }
               }}
             >
               {game.G.locked ? 'Locked' : buzzed ? 'Buzzed' : 'Buzz'}
