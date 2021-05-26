@@ -28,7 +28,7 @@ function buzz(G, ctx, id) {
 export const Buzzer = {
   name: 'buzzer',
   minPlayers: 2,
-  maxPlayers: 100,
+  maxPlayers: 200,
   setup: () => ({ queue: {}, locked: false }),
   phases: {
     play: {

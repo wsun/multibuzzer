@@ -203,7 +203,7 @@ export default function Lobby({ setAuth }) {
     <div className="touts">
       <div>
         <h4>Simple multiplayer buzzer system</h4>
-        <p>Host a room and invite up to 100 people to join</p>
+        <p>Host a room and invite up to 200 people to join</p>
       </div>
       <div>
         <h4>Join on any device</h4>
