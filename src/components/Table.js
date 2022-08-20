@@ -34,6 +34,9 @@ export default function Table(game) {
     // reset buzzer based on game
     if (!game.G.queue[game.playerID]) {
       setBuzzer(false);
+    } else {
+      // protect against race condition
+      setBuzzer(true);
     }
 
     // reset ability to play sound if there is no pending buzzer
