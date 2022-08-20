@@ -10,9 +10,11 @@ export default function Table(game) {
   const [buzzed, setBuzzer] = useState(
     some(game.G.queue, (o) => o.id === game.playerID)
   );
+  const [lastBuzz, setLastBuzz] = useState(null);
   const [sound, setSound] = useState(false);
   const [soundPlayed, setSoundPlayed] = useState(false);
   const buzzButton = useRef(null);
+  const queueRef = useRef(null);
 
   const buzzSound = new Howl({
     src: [
@@ -31,12 +33,21 @@ export default function Table(game) {
   };
 
   useEffect(() => {
+    console.log(game.G.queue, Date.now());
     // reset buzzer based on game
     if (!game.G.queue[game.playerID]) {
-      setBuzzer(false);
-    } else {
-      // protect against race condition
-      setBuzzer(true);
+      // delay the reset, in case game state hasn't reflected your buzz yet
+      if (lastBuzz && Date.now() - lastBuzz < 500) {
+        setTimeout(() => {
+          const queue = queueRef.current;
+          if (queue && !queue[game.playerID]) {
+            setBuzzer(false);
+          }
+        }, 500);
+      } else {
+        // immediate reset, if it's been awhile
+        setBuzzer(false);
+      }
     }
 
     // reset ability to play sound if there is no pending buzzer
@@ -49,6 +60,8 @@ export default function Table(game) {
     if (!loaded) {
       setLoaded(true);
     }
+
+    queueRef.current = game.G.queue;
   }, [game.G.queue]);
 
   const attemptBuzz = () => {
@@ -56,6 +69,7 @@ export default function Table(game) {
       playSound();
       game.moves.buzz(game.playerID);
       setBuzzer(true);
+      setLastBuzz(Date.now());
     }
   };
 
