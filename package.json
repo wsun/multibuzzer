@@ -4,6 +4,9 @@
   "author": "iamwillsun@gmail.com",
   "license": "MIT",
   "repository": "https://github.com/wsun/multibuzzer",
+  "engines": {
+    "node": "16.13.0"
+  },
   "scripts": {
     "start": "node -r esm src/server.js",
     "dev": "concurrently \"PORT=4000 yarn client\" \"PORT=4001 yarn start\"",
