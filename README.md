@@ -16,4 +16,5 @@ Please open an issue if you experience a bug or have product feedback!
 
 ### Deployment
 
-- React app will be built using `yarn build` and served through Koa server (same server used for boardgame.io server _and_ lobby)
+- Build React app using `yarn build`
+- Run `yarn start` to run the Koa server, which will serve the built React app (via '/build'), as well as operate both the boardgame.io server and lobby
