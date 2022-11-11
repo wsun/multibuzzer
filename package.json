@@ -16,7 +16,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "boardgame.io": "wsun/boardgame.io#master",
     "esm": "^3.2.25",
     "howler": "^2.1.3",
