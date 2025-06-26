@@ -50,9 +50,16 @@ export default function Header({
         </Navbar.Brand>
         <div className="nav-buttons">
           {!isNil(sound) ? (
-            <button className="text-button" onClick={() => setSound()}>
-              {sound ? 'Turn off sound' : 'Turn on sound'}
-            </button>
+            <select
+              className="text-select"
+              value={sound}
+              onChange={(e) => setSound(e.target.value)}
+            >
+              <option value="off">Sound Off</option>
+              <option value="default"> Buzzer </option>
+              <option value="chime"> Chime </option>
+              <option value="sonar"> Sonar </option>
+            </select>
           ) : null}
           {clearAuth ? (
             <button className="text-button" onClick={() => leave()}>

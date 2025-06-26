@@ -66,6 +66,15 @@ body {
   margin-left: 5px;
 }
 
+.App header .nav-buttons select.text-select {
+  background-color: var(--darkBlueColor);
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
 /* BUTTON */
 
 .App button {

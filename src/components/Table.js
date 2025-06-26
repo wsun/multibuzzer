@@ -11,7 +11,7 @@ export default function Table(game) {
     some(game.G.queue, (o) => o.id === game.playerID)
   );
   const [lastBuzz, setLastBuzz] = useState(null);
-  const [sound, setSound] = useState(false);
+  const [sound, setSound] = useState('off');
   const [soundPlayed, setSoundPlayed] = useState(false);
   const buzzButton = useRef(null);
   const queueRef = useRef(null);
@@ -19,15 +19,39 @@ export default function Table(game) {
   const buzzSound = new Howl({
     src: [
       `${process.env.PUBLIC_URL}/shortBuzz.webm`,
-      `${process.env.PUBLIC_URL}/shortBuzz.mp3`,
+      `${process.env.PUBLIC_URL}sounds/shortBuzz.mp3`,
     ],
+    volume: 0.5,
+    rate: 1.5,
+  });
+
+  const chimeSound = new Howl({
+    src: [`${process.env.PUBLIC_URL}sounds/softPing.mp3`],
+    volume: 1,
+    rate: 1.5,
+  });
+
+  const sonarSound = new Howl({
+    src: [`${process.env.PUBLIC_URL}sounds/sonar.wav`],
     volume: 0.5,
     rate: 1.5,
   });
 
   const playSound = () => {
     if (sound && !soundPlayed) {
-      buzzSound.play();
+      switch (sound) {
+        case 'default':
+          buzzSound.play();
+          break;
+        case 'chime':
+          chimeSound.play();
+          break;
+        case 'sonar':
+          sonarSound.play();
+          break;
+        default:
+          return;
+      }
       setSoundPlayed(true);
     }
   };
@@ -138,7 +162,7 @@ export default function Table(game) {
           })
         }
         sound={sound}
-        setSound={() => setSound(!sound)}
+        setSound={(value) => setSound(value)}
       />
       <Container>
         <section>
